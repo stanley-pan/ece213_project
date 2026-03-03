@@ -14,4 +14,4 @@ cmake -S . -B build -DUSE_CUDA=OFF
 cmake --build build -j
 
 echo "=== run ==="
-./build/FastSP -r data/ref.fa -e data/est.fa
+./build/FastSP -r data/test.true -e data/test.estimated
