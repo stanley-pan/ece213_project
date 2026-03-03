@@ -14,4 +14,5 @@ cmake -S . -B build -DUSE_CUDA=OFF
 cmake --build build -j
 
 echo "=== run ==="
-./build/FastSP -r data/test.true -e data/test.estimated
+# ./build/FastSP -r data/test.true -e data/test.estimated
+./build/FastSP -r data/10000/true_aligned.fa -e data/10000/twilight.aln
