@@ -83,6 +83,6 @@ int main(int argc, char** argv) {
 
     auto ms = std::chrono::duration<double, std::milli>(
                   std::chrono::high_resolution_clock::now() - start).count();
-    std::cerr << "Time: " << ms / 1000.0 << " s\n";
+    std::cerr << "Time: " << ms << " ms\n";
     return 0;
 }

@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SRCS
     src/main.cpp
     src/fastsp.cpp
-    src/fastsp_cuda.cu     # new GPU version
+    src/fastsp_cuda.cu     # GPU version
 )
 
 if(USE_CUDA)

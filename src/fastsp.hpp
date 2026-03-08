@@ -1,17 +1,19 @@
 #pragma once
 #include <string>
 
-struct FastSPOptions {
+class FastSPOptions {
+public:
     std::string reference_path;
     std::string estimated_path;
     std::string output_path;
-    std::string gap_chars;      // extra gap characters beyond '-' and '?'
+    std::string gap_chars; // extra gap characters beyond '-' and '?'
     bool use_cuda = false;
     bool mask_lower_est = false;
     bool mask_lower_ref = false;
 };
 
-struct FastSPResult {
+class FastSPResult {
+public:
     double sp_score = 0;
     double modeler  = 0;
     double spfn     = 0;
