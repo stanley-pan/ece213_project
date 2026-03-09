@@ -6,6 +6,10 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#ifdef USE_CUDA
+#include <cuda_runtime.h>
+#endif
+
 
 static void print_usage() {
     std::cerr <<
@@ -40,7 +44,6 @@ static void print_results(std::ostream& out, const FastSPResult& r) {
 }
 
 int main(int argc, char** argv) {
-    auto start = std::chrono::high_resolution_clock::now();
 
     FastSPOptions opt;
     std::string output_path;
@@ -66,23 +69,39 @@ int main(int argc, char** argv) {
         return 2;
     }
 
+    #ifdef USE_CUDA
+        if (opt.use_cuda) cudaFree(0);
+    #endif
+    auto start = std::chrono::high_resolution_clock::now();
+
     try {
-        const FastSPResult r = run_fastsp(opt);
+        const FastSPResult r = opt.use_cuda ? run_fastsp_cuda(opt) : run_fastsp(opt);
 
         if (output_path.empty()) {
             print_results(std::cout, r);
         } else {
             std::ofstream f(output_path);
-            if (!f) { std::cerr << "Cannot open output: " << output_path << "\n"; return 1; }
+            if (!f) {
+                std::cerr << "Cannot open output: " << output_path << "\n";
+                return 1;
+            }
             print_results(f, r);
         }
+
+        double total_ms = std::chrono::duration<double, std::milli>(
+                              std::chrono::high_resolution_clock::now() - start).count();
+
+        if (opt.use_cuda && r.gpu_time_ms >= 0.0) {
+            std::cerr << "GPU compute time: " << r.gpu_time_ms << " ms\n";
+            std::cerr << "Total wall time: "  << total_ms      << " ms\n";
+        } else {
+            std::cerr << "Time: " << total_ms << " ms\n";
+        }
+
     } catch (const std::exception& e) {
         std::cerr << "FastSP error: " << e.what() << "\n";
         return 1;
     }
 
-    auto ms = std::chrono::duration<double, std::milli>(
-                  std::chrono::high_resolution_clock::now() - start).count();
-    std::cerr << "Time: " << ms << " ms\n";
     return 0;
 }

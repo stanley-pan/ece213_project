@@ -36,6 +36,8 @@ public:
     long long insert_ref_total           = 0;
     long long insert_est_total           = 0;
 
+    double gpu_time_ms = -1.0;
+    
     // Alignment dimensions
     int n        = 0; // number of sequences
     int ref_cols = 0;
