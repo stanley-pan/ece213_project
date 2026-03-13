@@ -1,3 +1,5 @@
 # add gitignore
 /build
 /data/10000
+/data/20000
+/data/RNASim_100K
